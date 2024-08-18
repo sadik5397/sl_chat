@@ -1,21 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sl_chat/component/page_navigation.dart';
-import 'package:sl_chat/sign_up.dart';
 import 'auth/auth_service.dart';
 import 'component/text_field.dart';
 import 'component/button.dart';
 
-class SignIn extends StatefulWidget {
-  const SignIn({super.key});
+class SignUp extends StatefulWidget {
+  const SignUp({super.key});
 
   @override
-  State<SignIn> createState() => _SignInState();
+  State<SignUp> createState() => _SignUpState();
 }
 
-class _SignInState extends State<SignIn> {
+class _SignUpState extends State<SignUp> {
+  TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController rePasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -26,23 +27,27 @@ class _SignInState extends State<SignIn> {
             child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: [
               const Icon(CupertinoIcons.chat_bubble_text, size: 48),
               const SizedBox(height: 24),
-              const Text("Welcome to SL Chat"),
+              const Text("Please Register an Account"),
               const SizedBox(height: 24),
+              ThemeTextField(title: "Your Name", controller: nameController, textInputAction: TextInputAction.next),
+              const SizedBox(height: 12),
               ThemeTextField(title: "Email", controller: emailController, textInputType: TextInputType.emailAddress, textInputAction: TextInputAction.next),
               const SizedBox(height: 12),
-              ThemeTextField(title: "Password", controller: passwordController, obscureText: true, textInputAction: TextInputAction.done),
+              ThemeTextField(title: "Password", controller: passwordController, obscureText: true, textInputAction: TextInputAction.next),
+              const SizedBox(height: 12),
+              ThemeTextField(title: "Confirm Password", controller: rePasswordController, obscureText: true, textInputAction: TextInputAction.done),
               const SizedBox(height: 24),
               ThemeButton(
-                  title: "Sign In",
+                  title: "Sign Up",
                   onTap: () async {
                     try {
-                      await AuthService().signInWithEmailPassword(email: emailController.text, password: passwordController.text);
+                      await AuthService().signUpWithEmailPassword(email: emailController.text, password: passwordController.text);
                     } on Exception catch (e) {
                       Fluttertoast.showToast(msg: e.toString());
                     }
                   }),
               const SizedBox(height: 12),
-              ThemeButton(title: "Sign Up", onTap: () => route(context, const SignUp()), backgroundColor: CupertinoColors.extraLightBackgroundGray, textColor: CupertinoColors.systemCyan)
+              ThemeButton(title: "Go Back Sign In", onTap: routeBack(context), textOnly: true, textColor: CupertinoColors.activeBlue)
             ])));
   }
 }

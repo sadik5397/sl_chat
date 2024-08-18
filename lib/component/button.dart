@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 
 class ThemeButton extends StatelessWidget {
-  const ThemeButton({super.key, required this.title, this.backgroundColor, this.textColor, this.bold, this.onTap});
+  const ThemeButton({super.key, required this.title, this.backgroundColor, this.textColor, this.bold, this.onTap, this.textOnly});
 
   final String title;
   final Color? backgroundColor, textColor;
-  final bool? bold;
+  final bool? bold, textOnly;
   final void Function()? onTap;
 
   @override
@@ -14,7 +14,7 @@ class ThemeButton extends StatelessWidget {
       Expanded(
           child: CupertinoButton(
               onPressed: onTap,
-              color: backgroundColor ?? CupertinoColors.activeBlue,
+              color: textOnly == true ? null : (backgroundColor ?? CupertinoColors.activeBlue),
               child: Text(title, style: TextStyle(color: textColor ?? CupertinoColors.white, fontWeight: bold == true ? FontWeight.bold : FontWeight.normal))))
     ]);
   }

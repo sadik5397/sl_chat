@@ -15,7 +15,7 @@ class ThemeTextField extends StatelessWidget {
         textInputAction: textInputAction ?? TextInputAction.none,
         obscureText: obscureText ?? false,
         keyboardType: textInputType,
-        decoration: const BoxDecoration(color: Color(0x44000000), borderRadius: BorderRadius.all(Radius.circular(6))),
+        decoration: BoxDecoration(border: Border.all(color: const Color(0x22ffffff)), color: const Color(0x44000000), borderRadius: const BorderRadius.all(Radius.circular(6))),
         placeholder: title,
         controller: controller,
         padding: const EdgeInsets.all(14));

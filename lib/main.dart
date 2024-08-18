@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:sl_chat/firebase_options.dart';
 
+import 'firebase_options.dart';
+import 'home.dart';
 import 'sign_in.dart';
 import 'theme/dark_theme.dart';
 
@@ -16,6 +18,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoApp(debugShowCheckedModeBanner: false, title: 'SL Chat', theme: lightTheme, home: const SignIn());
+    return CupertinoApp(
+        debugShowCheckedModeBanner: false,
+        title: 'SL Chat',
+        theme: lightTheme,
+        home: StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot) => snapshot.hasData ? const Home() : const SignIn(),
+        ));
   }
 }

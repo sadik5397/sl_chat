@@ -1,2 +1,2 @@
 # sl_chat
-ScriptLauncher Firbase Chat
+ScriptLauncher Firebase Chat

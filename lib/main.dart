@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         theme: lightTheme,
         home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context, snapshot) => snapshot.hasData ? const Home() : const SignIn(),
+          builder: (context, snapshot) => snapshot.hasData ? const Home() : const SignIn()
         ));
   }
 }

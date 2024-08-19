@@ -1,7 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:sl_chat/component/chat_list_tile.dart';
+import 'package:sl_chat/component/handle_snapshot_error.dart';
+import 'package:sl_chat/component/list_section.dart';
 import 'package:sl_chat/service/auth_service.dart';
-import 'package:sl_chat/service/chat_service.dart';
+import 'package:sl_chat/service/firestore_service.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -17,32 +20,23 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
-          middle: const Text("SL Chat"),
-          trailing: CupertinoButton(
-              onPressed: () => AuthService().signOut(),
-              child: const Icon(CupertinoIcons.person_badge_minus, size: 20)),
-        ),
+            middle: const Text("SL Chat"),
+            trailing: Row(mainAxisSize: MainAxisSize.min, children: [
+              CupertinoButton(onPressed: () => AuthService().signOut(), child: const Icon(CupertinoIcons.person_alt_circle, size: 15)),
+              CupertinoButton(onPressed: () => AuthService().signOut(), child: const Icon(CupertinoIcons.person_badge_minus, size: 15)),
+            ])),
         child: ListView(children: [
-          Padding(
-              padding: const EdgeInsets.all(24),
-              child: Text('Logged in as\n${currentUser.email}',
-                  textAlign: TextAlign.center)),
+          // Padding(padding: const EdgeInsets.all(24), child: Text('Logged in as\n${currentUser.email}', textAlign: TextAlign.center)),
           StreamBuilder(
-              stream: ChatService().getUserStream(),
+              stream: FireStoreService().getUserStream(),
               builder: (context, snapshot) {
-                if (snapshot.hasError)
-                  return const Text("Something Went Wrong");
-                if (snapshot.connectionState == ConnectionState.waiting)
-                  return const Text("Loading...");
-                if (!snapshot.hasData || snapshot.data!.isEmpty)
-                  return const Text("No data available");
-                return ListView(
-                    shrinkWrap: true,
-                    children: snapshot.data!
-                        .map<Widget>((user) => CupertinoListTile(
-                            title: Text(user["displayName"].toString()),
-                            subtitle: Text(user["email"].toString())))
-                        .toList());
+                return handleSnapShotError(snapshot) ??
+                    ThemeListSection(
+                      header: "Messages",
+                      searchController: TextEditingController(),
+                      footer: "Total ${snapshot.data!.length} people available",
+                      children: snapshot.data!.map<Widget>((user) => ChatListTile(user: user)).toList(),
+                    );
               })
         ]));
   }

@@ -22,38 +22,18 @@ class _SignInState extends State<SignIn> {
         // navigationBar: CupertinoNavigationBar(middle: Text("SL Chat")),
         child: Padding(
             padding: const EdgeInsets.all(24),
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Icon(CupertinoIcons.chat_bubble_text, size: 48),
-                  const SizedBox(height: 24),
-                  const Text("Welcome to SL Chat"),
-                  const SizedBox(height: 24),
-                  ThemeTextField(
-                      title: "Email",
-                      controller: emailController,
-                      textInputType: TextInputType.emailAddress,
-                      textInputAction: TextInputAction.next),
-                  const SizedBox(height: 12),
-                  ThemeTextField(
-                      title: "Password",
-                      controller: passwordController,
-                      obscureText: true,
-                      textInputAction: TextInputAction.done),
-                  const SizedBox(height: 24),
-                  ThemeButton(
-                      title: "Sign In",
-                      onTap: () async => await AuthService()
-                          .signInWithEmailPassword(
-                              email: emailController.text,
-                              password: passwordController.text)),
-                  const SizedBox(height: 12),
-                  ThemeButton(
-                      title: "Sign Up",
-                      onTap: () => route(context, const SignUp()),
-                      backgroundColor: CupertinoColors.extraLightBackgroundGray,
-                      textColor: CupertinoColors.systemCyan)
-                ])));
+            child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: [
+              const Icon(CupertinoIcons.chat_bubble_text, size: 48),
+              const SizedBox(height: 24),
+              const Text("Welcome to SL Chat"),
+              const SizedBox(height: 24),
+              ThemeTextField(title: "Email", controller: emailController, textInputType: TextInputType.emailAddress, textInputAction: TextInputAction.next),
+              const SizedBox(height: 12),
+              ThemeTextField(title: "Password", controller: passwordController, obscureText: true, textInputAction: TextInputAction.done),
+              const SizedBox(height: 24),
+              ThemeButton(title: "Sign In", onTap: () async => await AuthService().signInWithEmailPassword(email: emailController.text, password: passwordController.text)),
+              const SizedBox(height: 12),
+              ThemeButton(title: "Sign Up", onTap: () => route(context, const SignUp()), backgroundColor: CupertinoColors.extraLightBackgroundGray, textColor: CupertinoColors.systemCyan)
+            ])));
   }
 }

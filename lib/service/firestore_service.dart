@@ -5,14 +5,15 @@ class FireStoreService {
   final FirebaseFirestore fireStore = FirebaseFirestore.instance;
 
   saveUserToFireStore({required UserCredential userCredential}) {
-    fireStore.collection("Users").doc(userCredential.user!.uid).set({
-      'uid': userCredential.user!.uid,
-      'email': userCredential.user!.email,
-      'displayName': userCredential.user!.displayName
-    });
+    fireStore.collection("Users").doc(userCredential.user!.uid).set({'uid': userCredential.user!.uid, 'email': userCredential.user!.email});
   }
 
-  updateDisplayName({required String uid, required String displayName}) {
-    fireStore.collection("Users").doc(uid).update({'displayName': displayName});
+  updateProfile({required String uid, String? displayName, String? photoUrl}) {
+    if (displayName != null) fireStore.collection("Users").doc(uid).update({'displayName': displayName});
+    if (photoUrl != null) fireStore.collection("Users").doc(uid).update({'photoUrl': photoUrl});
   }
+
+  Stream<List<Map<String, dynamic>>> getUserStream() => fireStore.collection("Users").snapshots().map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
+
+  Stream<List<String>> getUserIdListStream() => fireStore.collection("Users").snapshots().map((snapshot) => snapshot.docs.map((doc) => doc.id).toList());
 }

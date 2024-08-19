@@ -1,5 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:sl_chat/auth/auth_service.dart';
 
 class Home extends StatefulWidget {
@@ -10,13 +10,19 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  User currentUser = AuthService().getUserInfo();
+
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
-          middle: const Text("HomePage"),
-          trailing: IconButton(onPressed: () => AuthService().signOut(), icon: const Icon(CupertinoIcons.person_badge_minus), iconSize: 20),
+          middle: const Text("SL Chat"),
+          trailing: CupertinoButton(
+              onPressed: () => AuthService().signOut(),
+              child: const Icon(CupertinoIcons.person_badge_minus, size: 20)),
         ),
-        child: const Center(child: Text("HomePage")));
+        child: Center(
+            child: Text('Logged in as\n${currentUser.email}',
+                textAlign: TextAlign.center)));
   }
 }

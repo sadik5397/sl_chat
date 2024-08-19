@@ -4,8 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 class FireStoreService {
   final FirebaseFirestore fireStore = FirebaseFirestore.instance;
 
-  saveUserToFireStore({required UserCredential userCredential}) {
-    fireStore.collection("Users").doc(userCredential.user!.uid).set({'uid': userCredential.user!.uid, 'email': userCredential.user!.email});
+  saveUserToFireStore({required User user}) {
+    fireStore.collection("Users").doc(user.uid).set({'uid': user.uid, 'email': user.email});
   }
 
   updateProfile({required String uid, String? displayName, String? photoUrl}) {

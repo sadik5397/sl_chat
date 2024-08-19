@@ -22,9 +22,12 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'SL Chat',
         theme: lightTheme,
-        home: StreamBuilder(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context, snapshot) => snapshot.hasData ? const Home() : const SignIn()
-        ));
+        home: StreamBuilder<User?>(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
+                ? const Center(child: CupertinoActivityIndicator())
+                : snapshot.hasData
+                    ? const Home()
+                    : const SignIn()));
   }
 }

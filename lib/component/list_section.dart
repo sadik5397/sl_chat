@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:sl_chat/component/cupertino_header.dart';
 
 class ThemeListSection extends StatelessWidget {
   const ThemeListSection({super.key, required this.children, this.header, this.footer, this.searchController, this.topMargin = 0});
@@ -15,7 +16,7 @@ class ThemeListSection extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           SizedBox(height: topMargin),
-          if (header != null) Padding(padding: const EdgeInsets.only(bottom: 8), child: Text("Messages", style: CupertinoTheme.of(context).textTheme.navTitleTextStyle.copyWith(fontSize: 24.0))),
+          if (header != null) CupertinoHeader(header: header!),
           if (searchController != null)
             const Padding(
                 padding: EdgeInsets.only(bottom: 12),

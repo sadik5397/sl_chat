@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:sl_chat/component/page_navigation.dart';
 import 'package:sl_chat/sign_up.dart';
-import 'auth/auth_service.dart';
+import 'service/auth_service.dart';
 import 'component/text_field.dart';
 import 'component/button.dart';
 

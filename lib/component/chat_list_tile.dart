@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:sl_chat/chat_screen.dart';
+import 'package:sl_chat/component/page_navigation.dart';
 
 class ChatListTile extends StatelessWidget {
   const ChatListTile({super.key, required this.user});
@@ -8,7 +10,7 @@ class ChatListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoListTile(
-        onTap: () {},
+        onTap: () => route(context, ChatScreen(recipientName: user["displayName"].toString())),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         leading: Container(
             alignment: Alignment.center,

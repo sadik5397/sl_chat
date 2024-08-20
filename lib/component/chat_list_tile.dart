@@ -1,25 +1,43 @@
 import 'package:flutter/cupertino.dart';
-import 'package:sl_chat/chat_screen.dart';
-import 'package:sl_chat/component/page_navigation.dart';
+import 'package:moment_dart/moment_dart.dart';
+import 'package:sl_chat/model/message.dart';
+import 'package:sl_chat/service/auth_service.dart';
 
-class ChatListTile extends StatelessWidget {
-  const ChatListTile({super.key, required this.user});
+class ChatListTile extends StatefulWidget {
+  const ChatListTile({super.key, required this.message});
 
-  final Map user;
+  final Message message;
+
+  @override
+  State<ChatListTile> createState() => _ChatListTileState();
+}
+
+class _ChatListTileState extends State<ChatListTile> {
+  bool showTime = false;
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoListTile(
-        onTap: () => route(context, ChatScreen(recipientName: user["displayName"].toString())),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        leading: Container(
-            alignment: Alignment.center,
-            height: double.maxFinite,
-            width: double.maxFinite,
-            decoration: BoxDecoration(shape: BoxShape.circle, color: const Color(0x15ffffff), image: user["photoUrl"] == null ? null : DecorationImage(image: NetworkImage(user["photoUrl"].toString()))),
-            child: Text(user["displayName"].toString().toUpperCase()[0])),
-        trailing: const CupertinoListTileChevron(),
-        title: Text(user["displayName"].toString()),
-        subtitle: Text(user["email"].toString()));
+    bool isCurrentUser = (widget.message.senderID == AuthService().getCurrentUserInfo().uid);
+    return Align(
+        alignment: isCurrentUser ? Alignment.centerRight : Alignment.centerLeft,
+        child: GestureDetector(
+            onTap: () => setState(() => showTime = !showTime),
+            child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: isCurrentUser ? CrossAxisAlignment.end : CrossAxisAlignment.start, children: [
+              Container(
+                  margin: const EdgeInsets.symmetric(vertical: 4),
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      color: isCurrentUser ? CupertinoColors.activeBlue : CupertinoColors.activeGreen,
+                      borderRadius: BorderRadius.circular(12).copyWith(bottomRight: isCurrentUser ? const Radius.circular(0) : null, bottomLeft: isCurrentUser ? null : const Radius.circular(0))),
+                  child: Text(widget.message.message)),
+              if (showTime)
+                Padding(
+                    padding: const EdgeInsets.only(top: 2, bottom: 8),
+                    child: Text(
+                        widget.message.timestamp.toDate().isBefore(DateTime.now().subtract(const Duration(days: 1)))
+                            ? Moment(widget.message.timestamp.toDate()).toString()
+                            : Moment(widget.message.timestamp.toDate()).calendar(),
+                        style: const TextStyle(color: CupertinoColors.inactiveGray, fontSize: 12)))
+            ])));
   }
 }

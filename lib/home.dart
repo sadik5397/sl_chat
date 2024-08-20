@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:sl_chat/component/chat_list_tile.dart';
+import 'package:sl_chat/component/conversation_list_tile.dart';
 import 'package:sl_chat/component/handle_snapshot_error.dart';
 import 'package:sl_chat/component/list_section.dart';
 import 'package:sl_chat/profile.dart';
@@ -32,7 +32,7 @@ class _HomeState extends State<Home> {
                         header: "Messages",
                         searchController: TextEditingController(),
                         footer: "Total ${snapshot.data!.length} people available",
-                        children: snapshot.data!.map<Widget>((user) => ChatListTile(user: user)).toList());
+                        children: snapshot.data!.map<Widget>((user) => ConversationListTile(user: user)).toList());
               })
         ]));
   }

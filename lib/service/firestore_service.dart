@@ -21,12 +21,11 @@ class FireStoreService {
 
   Future<void> sendMessage({required String receiverID, required String message}) async {
     String currentUserID = AuthService().getCurrentUserInfo().uid;
-    String currentUserEmail = AuthService().getCurrentUserInfo().email!;
     Timestamp currentTime = Timestamp.now();
     List<String> userIDs = [currentUserID, receiverID];
     userIDs.sort();
     String chatroomID = userIDs.join("_");
-    Message newMessage = Message(senderID: currentUserID, senderEmail: currentUserEmail, receiverID: receiverID, message: message, timestamp: currentTime);
+    Message newMessage = Message(senderID: currentUserID,  receiverID: receiverID, message: message, timestamp: currentTime);
     await fireStore.collection("Chats").doc(chatroomID).collection("Messages").add(newMessage.toMap());
   }
 

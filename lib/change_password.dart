@@ -16,6 +16,7 @@ class _ChangePasswordState extends State<ChangePassword> {
   User currentUser = AuthService().getCurrentUserInfo();
   TextEditingController passwordController = TextEditingController();
   TextEditingController rePasswordController = TextEditingController();
+  bool buttonLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +27,25 @@ class _ChangePasswordState extends State<ChangePassword> {
             child: ListView(children: [
               const CupertinoHeader(header: "Change Password"),
               const SizedBox(height: 12),
-              ThemeTextField(title: "New Password", floatingTitle: "New Password", controller: passwordController, textInputAction: TextInputAction.next, obscureText: true),
+              ThemeTextField(
+                  autofillHints: AutofillHints.password, title: "New Password", floatingTitle: "New Password", controller: passwordController, textInputAction: TextInputAction.next, obscureText: true),
               const SizedBox(height: 12),
-              ThemeTextField(title: "Confirm Password", floatingTitle: "Confirm Password", controller: rePasswordController, textInputAction: TextInputAction.next, obscureText: true),
+              ThemeTextField(
+                  autofillHints: AutofillHints.newPassword,
+                  title: "Confirm Password",
+                  floatingTitle: "Confirm Password",
+                  controller: rePasswordController,
+                  textInputAction: TextInputAction.next,
+                  obscureText: true),
               const SizedBox(height: 24),
-              ThemeButton(title: "Update Password", onTap: () async => await AuthService().changePassword(password: passwordController.text, rePassword: rePasswordController.text))
+              ThemeButton(
+                  title: "Update Password",
+                  isLoading: buttonLoading,
+                  onTap: () async {
+                    setState(() => buttonLoading = true);
+                    await AuthService().changePassword(password: passwordController.text, rePassword: rePasswordController.text);
+                    setState(() => buttonLoading = false);
+                  })
             ])));
   }
 }

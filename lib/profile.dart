@@ -19,6 +19,7 @@ class _MyProfileState extends State<MyProfile> {
   User currentUser = AuthService().getCurrentUserInfo();
   late TextEditingController nameController = TextEditingController(text: currentUser.displayName);
   late TextEditingController emailController = TextEditingController(text: currentUser.email);
+  bool buttonLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -42,11 +43,18 @@ class _MyProfileState extends State<MyProfile> {
               const SizedBox(height: 12),
               ThemeTextField(title: "Email Address", floatingTitle: "Email Address (Not Editable)", controller: emailController, textInputAction: TextInputAction.next, isDisable: true),
               const SizedBox(height: 24),
-              ThemeButton(title: "Update Profile", onTap: () async => await AuthService().updateProfile(name: nameController.text)),
+              ThemeButton(
+                  title: "Update Profile",
+                  isLoading: buttonLoading,
+                  onTap: () async {
+                    setState(() => buttonLoading = true);
+                    await AuthService().updateProfile(name: nameController.text);
+                    setState(() => buttonLoading = false);
+                  }),
               const SizedBox(height: 12),
               ThemeButton(title: "Change Password", onTap: () => route(context, const ChangePassword()), backgroundColor: CupertinoColors.extraLightBackgroundGray, textColor: CupertinoColors.systemCyan),
               const SizedBox(height: 12),
-              ThemeButton(title: "Sign Out", onTap: ()=> AuthService().signOut(context), backgroundColor: CupertinoColors.destructiveRed, textColor: CupertinoColors.white)
+              ThemeButton(title: "Sign Out", onTap: () => AuthService().signOut(context), backgroundColor: CupertinoColors.destructiveRed, textColor: CupertinoColors.white)
             ])));
   }
 }

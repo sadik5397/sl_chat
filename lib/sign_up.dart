@@ -16,6 +16,7 @@ class _SignUpState extends State<SignUp> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController rePasswordController = TextEditingController();
+  bool buttonLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -29,18 +30,23 @@ class _SignUpState extends State<SignUp> {
               const SizedBox(height: 24),
               const Text("Please Register an Account", textAlign: TextAlign.center),
               const SizedBox(height: 24),
-              ThemeTextField(title: "Your Name", controller: nameController, textInputAction: TextInputAction.next),
+              ThemeTextField(autofillHints: AutofillHints.name, title: "Your Name", controller: nameController, textInputAction: TextInputAction.next),
               const SizedBox(height: 12),
-              ThemeTextField(title: "Email", controller: emailController, textInputType: TextInputType.emailAddress, textInputAction: TextInputAction.next),
+              ThemeTextField(autofillHints: AutofillHints.email, title: "Email", controller: emailController, textInputType: TextInputType.emailAddress, textInputAction: TextInputAction.next),
               const SizedBox(height: 12),
-              ThemeTextField(title: "Password", controller: passwordController, obscureText: true, textInputAction: TextInputAction.next),
+              ThemeTextField(autofillHints: AutofillHints.password, title: "Password", controller: passwordController, obscureText: true, textInputAction: TextInputAction.next),
               const SizedBox(height: 12),
-              ThemeTextField(title: "Confirm Password", controller: rePasswordController, obscureText: true, textInputAction: TextInputAction.done),
+              ThemeTextField(autofillHints: AutofillHints.newPassword, title: "Confirm Password", controller: rePasswordController, obscureText: true, textInputAction: TextInputAction.done),
               const SizedBox(height: 24),
               ThemeButton(
                   title: "Sign Up",
-                  onTap: () async => await AuthService()
-                      .signUpWithEmailPassword(name: nameController.text, email: emailController.text, password: passwordController.text, rePassword: rePasswordController.text, context: context)),
+                  isLoading: buttonLoading,
+                  onTap: () async {
+                    setState(() => buttonLoading = true);
+                    await AuthService()
+                        .signUpWithEmailPassword(name: nameController.text, email: emailController.text, password: passwordController.text, rePassword: rePasswordController.text, context: context);
+                    setState(() => buttonLoading = false);
+                  }),
               const SizedBox(height: 12),
               ThemeButton(title: "Go Back Sign In", onTap: () => routeBack(context), textOnly: true, textColor: CupertinoColors.activeBlue)
             ])));

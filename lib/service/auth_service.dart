@@ -45,6 +45,16 @@ class AuthService {
     }
   }
 
+  Future<void> restPasswordRequest({required String email}) async {
+    try {
+      await auth.sendPasswordResetEmail(email: email);
+      Fluttertoast.showToast(msg: "Please check your email inbox");
+    } on FirebaseAuthException catch (e) {
+      Fluttertoast.showToast(msg: e.message.toString());
+      throw Exception(e);
+    }
+  }
+
   Future<UserCredential?> signUpWithEmailPassword({required String email, String? name, String? photoUrl, required String password, required String rePassword, required BuildContext context}) async {
     try {
       if (password == rePassword) {

@@ -33,14 +33,7 @@ class _SignInState extends State<SignIn> {
               const SizedBox(height: 12),
               ThemeTextField(autofillHints: AutofillHints.password, title: "Password", controller: passwordController, obscureText: true, textInputAction: TextInputAction.done),
               const SizedBox(height: 24),
-              ThemeButton(
-                  title: "Sign In",
-                  isLoading: buttonLoading,
-                  onTap: () async {
-                    setState(() => buttonLoading = true);
-                    await AuthService().signInWithEmailPassword(email: emailController.text, password: passwordController.text);
-                    setState(() => buttonLoading = false);
-                  }),
+              ThemeButton(title: "Sign In", onTap: () async => await AuthService().signInWithEmailPassword(email: emailController.text, password: passwordController.text)),
               const SizedBox(height: 12),
               ThemeButton(title: "Sign Up", onTap: () => route(context, const SignUp()), backgroundColor: CupertinoColors.extraLightBackgroundGray, textColor: CupertinoColors.systemCyan),
               const SizedBox(height: 12),

@@ -24,7 +24,9 @@ class _MyProfileState extends State<MyProfile> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-        navigationBar: const CupertinoNavigationBar(previousPageTitle: "Inbox"),
+        navigationBar: CupertinoNavigationBar(
+            previousPageTitle: "Inbox",
+            trailing: CupertinoButton(padding: EdgeInsets.zero, onPressed: () async => await AuthService().deleteUser(context: context), child: const Icon(CupertinoIcons.delete_solid, size: 24))),
         child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: ListView(children: [

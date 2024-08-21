@@ -10,26 +10,28 @@ class FireStoreService {
     await fireStore.collection("Users").doc(user.uid).set({'uid': user.uid, 'email': user.email});
   }
 
-  Future<void> updateProfile({required String uid, String? displayName, String? photoUrl}) async {
+  Future<void> updateUserToFireStore({required String uid, String? displayName, String? photoUrl}) async {
     if (displayName != null) await fireStore.collection("Users").doc(uid).update({'displayName': displayName});
     if (photoUrl != null) await fireStore.collection("Users").doc(uid).update({'photoUrl': photoUrl});
   }
 
-  Stream<List<Map<String, dynamic>>> getUserStream() => fireStore.collection("Users").snapshots().map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
+  Stream<List<Map<String, dynamic>>> getUserStreamFromFireStore() => fireStore.collection("Users").snapshots().map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
 
-  Stream<List<String>> getUserIdListStream() => fireStore.collection("Users").snapshots().map((snapshot) => snapshot.docs.map((doc) => doc.id).toList());
+  Stream<List<String>> getUserIdListStreamFromFireStore() => fireStore.collection("Users").snapshots().map((snapshot) => snapshot.docs.map((doc) => doc.id).toList());
 
-  Future<void> sendMessage({required String receiverID, required String message}) async {
+  Future<void> deleteUserFromFireStore({required User user}) async => await fireStore.collection("Users").doc(user.uid).delete();
+
+  Future<void> sendMessageToFireStore({required String receiverID, required String message}) async {
     String currentUserID = AuthService().getCurrentUserInfo().uid;
     Timestamp currentTime = Timestamp.now();
     List<String> userIDs = [currentUserID, receiverID];
     userIDs.sort();
     String chatroomID = userIDs.join("_");
-    Message newMessage = Message(senderID: currentUserID,  receiverID: receiverID, message: message, timestamp: currentTime);
+    Message newMessage = Message(senderID: currentUserID, receiverID: receiverID, message: message, timestamp: currentTime);
     await fireStore.collection("Chats").doc(chatroomID).collection("Messages").add(newMessage.toMap());
   }
 
-  Stream<List<Message>> getMessageStream({required String receiverID}) {
+  Stream<List<Message>> getMessageStreamFromFireStore({required String receiverID}) {
     String currentUserID = AuthService().getCurrentUserInfo().uid;
     List<String> userIDs = [currentUserID, receiverID];
     userIDs.sort();

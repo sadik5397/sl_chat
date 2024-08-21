@@ -33,7 +33,7 @@ class _ChatScreenState extends State<ChatScreen> {
           Expanded(
               child: ListView(padding: const EdgeInsets.symmetric(horizontal: 20), reverse: true, children: [
             StreamBuilder(
-                stream: FireStoreService().getMessageStream(receiverID: widget.recipient["uid"]),
+                stream: FireStoreService().getMessageStreamFromFireStore(receiverID: widget.recipient["uid"]),
                 builder: (context, snapshot) {
                   return handleSnapShotError(snapshot) ??
                       Column(
@@ -55,7 +55,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       padding: const EdgeInsets.only(right: 10),
                       child: const Icon(CupertinoIcons.arrow_up_circle_fill, size: 28),
                       onPressed: () async {
-                        await FireStoreService().sendMessage(receiverID: widget.recipient["uid"], message: reply.text);
+                        await FireStoreService().sendMessageToFireStore(receiverID: widget.recipient["uid"], message: reply.text);
                         reply.clear();
                       })))
         ]));

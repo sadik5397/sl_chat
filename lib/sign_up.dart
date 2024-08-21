@@ -40,13 +40,8 @@ class _SignUpState extends State<SignUp> {
               const SizedBox(height: 24),
               ThemeButton(
                   title: "Sign Up",
-                  isLoading: buttonLoading,
-                  onTap: () async {
-                    setState(() => buttonLoading = true);
-                    await AuthService()
-                        .signUpWithEmailPassword(name: nameController.text, email: emailController.text, password: passwordController.text, rePassword: rePasswordController.text, context: context);
-                    setState(() => buttonLoading = false);
-                  }),
+                  onTap: () async => await AuthService()
+                      .signUpWithEmailPassword(name: nameController.text, email: emailController.text, password: passwordController.text, rePassword: rePasswordController.text, context: context)),
               const SizedBox(height: 12),
               ThemeButton(title: "Go Back Sign In", onTap: () => routeBack(context), textOnly: true, textColor: CupertinoColors.activeBlue)
             ])));

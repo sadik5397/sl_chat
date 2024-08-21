@@ -25,7 +25,7 @@ class _HomeState extends State<Home> {
             trailing: CupertinoButton(padding: EdgeInsets.zero, onPressed: () => route(context, const MyProfile()), child: const Icon(CupertinoIcons.person_alt_circle, size: 24))),
         child: ListView(children: [
           StreamBuilder(
-              stream: FireStoreService().getUserStream(),
+              stream: FireStoreService().getUserStreamFromFireStore(),
               builder: (context, snapshot) {
                 return handleSnapShotError(snapshot) ??
                     ThemeListSection(

@@ -22,6 +22,7 @@ class _HomeState extends State<Home> {
         navigationBar: CupertinoNavigationBar(
             padding: const EdgeInsetsDirectional.only(end: 8),
             middle: const Text("SL Chat"),
+            automaticallyImplyLeading: false,
             trailing: CupertinoButton(padding: EdgeInsets.zero, onPressed: () => route(context, const MyProfile()), child: const Icon(CupertinoIcons.person_alt_circle, size: 24))),
         child: ListView(children: [
           StreamBuilder(

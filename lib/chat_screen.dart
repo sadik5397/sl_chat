@@ -39,7 +39,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       Column(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: snapshot.data!.map<Widget>((message) {
-                            return ChatListTile(message: message);
+                            return ChatListTile(message: message, context: context);
                           }).toList());
                 })
           ])),
@@ -48,6 +48,7 @@ class _ChatScreenState extends State<ChatScreen> {
               child: ThemeTextField(
                   controller: reply,
                   textInputType: TextInputType.multiline,
+                  textCapitalization: TextCapitalization.sentences,
                   textInputAction: TextInputAction.send,
                   title: "Reply Here",
                   autoFocus: true,

@@ -28,7 +28,29 @@ class FireStoreService {
     userIDs.sort();
     String chatroomID = userIDs.join("_");
     Message newMessage = Message(senderID: currentUserID, receiverID: receiverID, message: message, timestamp: currentTime);
-    await fireStore.collection("Chats").doc(chatroomID).collection("Messages").add(newMessage.toMap());
+    final docRef = await fireStore.collection("Chats").doc(chatroomID).collection("Messages").add(newMessage.toMap());
+    await docRef.update({'documentID': docRef.id});
+  }
+
+  Future<void> setReactToFireStore({required Message message, required int reactIndex}) async {
+    List<String> userIDs = [message.senderID, message.receiverID];
+    userIDs.sort();
+    String chatroomID = userIDs.join("_");
+    await fireStore.collection("Chats").doc(chatroomID).collection("Messages").doc(message.documentID).update({'reactIndex': reactIndex});
+  }
+
+  Future<void> deleteMessageFromFireStore({required Message message}) async {
+    List<String> userIDs = [message.senderID, message.receiverID];
+    userIDs.sort();
+    String chatroomID = userIDs.join("_");
+    await fireStore.collection("Chats").doc(chatroomID).collection("Messages").doc(message.documentID).update({'deleted': true});
+  }
+
+  Future<void> editMessageFromFireStore({required Message message, required String newMessage}) async {
+    List<String> userIDs = [message.senderID, message.receiverID];
+    userIDs.sort();
+    String chatroomID = userIDs.join("_");
+    await fireStore.collection("Chats").doc(chatroomID).collection("Messages").doc(message.documentID).update({'message': newMessage, 'edited': true});
   }
 
   Stream<List<Message>> getMessageStreamFromFireStore({required String receiverID}) {

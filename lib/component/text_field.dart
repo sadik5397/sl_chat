@@ -12,6 +12,7 @@ class ThemeTextField extends StatelessWidget {
       this.floatingTitle,
       this.autofillHints,
       this.endChild,
+      this.textCapitalization,
       this.autoFocus = false});
 
   final String title;
@@ -20,6 +21,7 @@ class ThemeTextField extends StatelessWidget {
   final bool obscureText, isDisable, autoFocus;
   final TextInputType? textInputType;
   final TextInputAction? textInputAction;
+  final TextCapitalization? textCapitalization;
   final Widget? endChild;
 
   @override
@@ -30,6 +32,7 @@ class ThemeTextField extends StatelessWidget {
           autofocus: autoFocus,
           autofillHints: autofillHints != null ? [autofillHints!] : null,
           enabled: !isDisable,
+          textCapitalization: textCapitalization ?? TextCapitalization.none,
           textInputAction: textInputAction ?? TextInputAction.none,
           obscureText: obscureText,
           keyboardType: textInputType,

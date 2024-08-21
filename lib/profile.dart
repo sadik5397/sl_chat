@@ -56,7 +56,9 @@ class _MyProfileState extends State<MyProfile> {
               const SizedBox(height: 12),
               ThemeButton(title: "Change Password", onTap: () => route(context, const ChangePassword()), backgroundColor: CupertinoColors.extraLightBackgroundGray, textColor: CupertinoColors.systemCyan),
               const SizedBox(height: 12),
-              ThemeButton(title: "Sign Out", onTap: () => AuthService().signOut(context), backgroundColor: CupertinoColors.destructiveRed, textColor: CupertinoColors.white)
+              ThemeButton(title: "Sign Out", onTap: () => AuthService().signOut(context), backgroundColor: CupertinoColors.destructiveRed, textColor: CupertinoColors.white),
+              const SizedBox(height: 24),
+              const Text("Created with ♥ by S.a. Sadik", style: TextStyle(color: CupertinoColors.inactiveGray, fontSize: 12), textAlign: TextAlign.center)
             ])));
   }
 }

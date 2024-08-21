@@ -15,7 +15,16 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  @override
+  TextEditingController searchController = TextEditingController();
+  String searchQuery = '';
+  FocusNode focusNode = FocusNode();
+
+  Future<void> updateSearchQuery(String query) async => setState(() => searchQuery = searchController.text.toLowerCase());
+
+  Future<void> refresh() async {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
@@ -28,12 +37,14 @@ class _HomeState extends State<Home> {
           StreamBuilder(
               stream: FireStoreService().getUserStreamFromFireStore(),
               builder: (context, snapshot) {
+                final data = snapshot.data?.where((user) => user["displayName"].toLowerCase().contains(searchQuery)).toList() ?? [];
                 return handleSnapShotError(snapshot) ??
                     ThemeListSection(
                         header: "Messages",
-                        searchController: TextEditingController(),
-                        footer: "Total ${snapshot.data!.length} people available",
-                        children: snapshot.data!.map<Widget>((user) => ConversationListTile(user: user)).toList());
+                        onSearchEntrySubmitted: (value) async => await updateSearchQuery(searchQuery),
+                        searchController: searchController,
+                        footer: "Total ${data.length - 1} people available",
+                        children: data.map<Widget>((user) => ConversationListTile(user: user)).toList());
               })
         ]));
   }

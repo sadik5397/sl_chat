@@ -19,8 +19,11 @@ class ConversationListTile extends StatelessWidget {
               alignment: Alignment.center,
               height: double.maxFinite,
               width: double.maxFinite,
-              decoration: BoxDecoration(shape: BoxShape.circle, color: const Color(0x15ffffff), image: user["photoUrl"] == null ? null : DecorationImage(image: NetworkImage(user["photoUrl"].toString()))),
-              child: Text(user["displayName"].toString().toUpperCase()[0])),
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: user["photoURL"] == null ? const Color(0x15ffffff) : CupertinoColors.white,
+                  image: user["photoURL"] == null ? null : DecorationImage(image: NetworkImage(user["photoURL"]))),
+              child: user["photoURL"] == null ? Text(user["displayName"].toString().toUpperCase()[0]) : null),
           trailing: const CupertinoListTileChevron(),
           title: Text(user["displayName"].toString()),
           subtitle: Text(user["email"].toString())),

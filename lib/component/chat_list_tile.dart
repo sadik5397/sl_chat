@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:moment_dart/moment_dart.dart';
-import 'package:sl_chat/component/button.dart';
 import 'package:sl_chat/component/page_navigation.dart';
 import 'package:sl_chat/model/message.dart';
 import 'package:sl_chat/service/auth_service.dart';
@@ -142,7 +141,6 @@ class _ChatListTileState extends State<ChatListTile> {
     showCupertinoDialog(
         context: context,
         builder: (BuildContext context) {
-          TextEditingController reply = TextEditingController(text: widget.message.message);
           return CupertinoAlertDialog(title: const Text('Are you sure?'), actions: <Widget>[
             CupertinoDialogAction(child: const Text('Cancel'), onPressed: () => routeBack(context)),
             CupertinoDialogAction(

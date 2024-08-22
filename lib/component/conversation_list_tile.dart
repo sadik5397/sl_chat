@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:sl_chat/chat_screen.dart';
-import 'package:sl_chat/component/page_navigation.dart';
-import 'package:sl_chat/service/auth_service.dart';
+
+import '../service/auth_service.dart';
+import '../view/chat/chat_screen.dart';
+import 'page_navigation.dart';
 
 class ConversationListTile extends StatelessWidget {
   const ConversationListTile({super.key, required this.user});

@@ -6,7 +6,6 @@
     <meta charset="UTF-8">
     <meta content="IE=Edge" http-equiv="X-UA-Compatible">
     <meta name="description" content="Created with ♥ by S.A. SADIK">
-
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-title" content="SL Chat">
@@ -32,8 +31,20 @@
 </head>
 <body>
 <div id="flutter_splash">
-    <img src="https://i.ibb.co/8PvNTJD/1479.gif" alt="Splash Image">
+    <img src="loading.png" alt="Splash Image">
 </div>
 <script src="flutter_bootstrap.js" async></script>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+    const firebaseConfig = {
+      apiKey: "AIzaSyDzCIJBoyLp4LHWAh2xd8N-H1e2YhGab3U",
+      authDomain: "sl-chat-f994c.firebaseapp.com",
+      projectId: "sl-chat-f994c",
+      storageBucket: "sl-chat-f994c.appspot.com",
+      messagingSenderId: "850882059025",
+      appId: "1:850882059025:web:da027a3e1f5009c0458ab0"
+    };
+    const app = initializeApp(firebaseConfig);
+</script>
 </body>
 </html>

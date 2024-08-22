@@ -3,9 +3,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'firebase_options.dart';
-import 'home.dart';
-import 'sign_in.dart';
 import 'theme/dark_theme.dart';
+import 'view/auth/sign_in.dart';
+import 'view/inbox/home.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

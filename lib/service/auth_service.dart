@@ -1,15 +1,34 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:sl_chat/component/page_navigation.dart';
-import 'package:sl_chat/home.dart';
-import 'package:sl_chat/service/firestore_service.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
-import '../sign_in.dart';
+import '../component/page_navigation.dart';
+import '../view/auth/sign_in.dart';
+import '../view/inbox/home.dart';
+import 'firestore_service.dart';
 
 class AuthService {
   final FirebaseAuth auth = FirebaseAuth.instance;
+
+  Future<UserCredential> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      if (googleUser == null) {
+        Fluttertoast.showToast(msg: "Sign in aborted by user");
+        return Future.error("Sign in aborted by user");
+      }
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final AuthCredential credential = GoogleAuthProvider.credential(accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
+      UserCredential userCredential = await auth.signInWithCredential(credential); //sign in with google
+      await FireStoreService().saveUserToFireStore(user: userCredential.user!);
+      return userCredential;
+    } on FirebaseAuthException catch (e) {
+      throw Fluttertoast.showToast(msg: e.message.toString());
+    }
+  }
 
   Future<UserCredential> signInWithEmailPassword({required String email, required String password}) async {
     try {
@@ -56,13 +75,13 @@ class AuthService {
     }
   }
 
-  Future<UserCredential?> signUpWithEmailPassword({required String email, String? name, String? photoUrl, required String password, required String rePassword, required BuildContext context}) async {
+  Future<UserCredential?> signUpWithEmailPassword(
+      {required String email, String? name, String? photoUrl, required String password, required String rePassword, required BuildContext context}) async {
     try {
       if (password == rePassword) {
         UserCredential userCredential = await auth.createUserWithEmailAndPassword(email: email, password: password);
         FireStoreService().saveUserToFireStore(user: userCredential.user!);
         updateProfile(name: name, photoUrl: photoUrl);
-        // ignore: use_build_context_synchronously
         routeNoBack(context, const Home());
         return userCredential;
       } else {

@@ -7,7 +7,10 @@ class FireStoreService {
   final FirebaseFirestore fireStore = FirebaseFirestore.instance;
 
   Future<void> saveUserToFireStore({required User user}) async {
-    await fireStore.collection("Users").doc(user.uid).set({'uid': user.uid, 'email': user.email});
+    await fireStore
+        .collection("Users")
+        .doc(user.uid)
+        .set({'uid': user.uid, 'email': user.email, if (user.displayName != null) 'displayName': user.displayName, if (user.photoURL != null) 'photoURL': user.photoURL});
   }
 
   Future<void> updateUserToFireStore({required String uid, String? displayName, String? photoUrl}) async {

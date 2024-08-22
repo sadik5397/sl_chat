@@ -22,7 +22,6 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-        // navigationBar: CupertinoNavigationBar(middle: Text("SL Chat")),
         child: Padding(
             padding: const EdgeInsets.all(24),
             child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: [

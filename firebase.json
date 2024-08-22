@@ -1,1 +1,37 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"sl-chat-f994c","appId":"1:850882059025:android:afc089b9ec761cbf458ab0","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"sl-chat-f994c","configurations":{"android":"1:850882059025:android:afc089b9ec761cbf458ab0","web":"1:850882059025:web:da027a3e1f5009c0458ab0","windows":"1:850882059025:web:c923b93773c3132d458ab0"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "sl-chat-f994c",
+          "appId": "1:850882059025:android:afc089b9ec761cbf458ab0",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "sl-chat-f994c",
+          "configurations": {
+            "android": "1:850882059025:android:afc089b9ec761cbf458ab0",
+            "web": "1:850882059025:web:da027a3e1f5009c0458ab0",
+            "windows": "1:850882059025:web:c923b93773c3132d458ab0"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

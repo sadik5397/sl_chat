@@ -7,10 +7,11 @@ import 'package:sl_chat/service/auth_service.dart';
 import 'package:sl_chat/service/firestore_service.dart';
 
 class ChatListTile extends StatefulWidget {
-  const ChatListTile({super.key, required this.message, required this.context});
+  const ChatListTile({super.key, required this.message, required this.context, required this.recipient});
 
   final Message message;
   final BuildContext context;
+  final Map recipient;
 
   @override
   State<ChatListTile> createState() => _ChatListTileState();
@@ -32,24 +33,41 @@ class _ChatListTileState extends State<ChatListTile> {
             Row(mainAxisSize: MainAxisSize.min, children: [
               if (widget.message.reactIndex != null && widget.message.reactIndex != 0 && isCurrentUser && widget.message.deleted == null)
                 Padding(padding: const EdgeInsets.symmetric(horizontal: 10), child: Icon(disabledIcons[widget.message.reactIndex! - 1], size: 18, color: CupertinoColors.inactiveGray)),
-              Container(
-                  margin: const EdgeInsets.symmetric(vertical: 4),
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                      color: widget.message.deleted != null ? const Color(0x10ffffff) : (isCurrentUser ? CupertinoColors.activeBlue : CupertinoColors.activeGreen),
-                      border: widget.message.deleted != null ? Border.all(color: const Color(0x20ffffff)) : null,
-                      borderRadius: BorderRadius.circular(12).copyWith(bottomRight: isCurrentUser ? const Radius.circular(0) : null, bottomLeft: isCurrentUser ? null : const Radius.circular(0))),
-                  child: Text(widget.message.deleted == null ? widget.message.message : "(Message deleted)",
-                      style: TextStyle(color: widget.message.deleted != null ? const Color(0x80ffffff) : null, fontStyle: widget.message.deleted != null ? FontStyle.italic : null))),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  if (!isCurrentUser)
+                    Container(
+                        alignment: Alignment.center,
+                        margin: const EdgeInsets.only(bottom: 4, right: 8),
+                        height: 38,
+                        width: 38,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: widget.recipient["photoURL"] == null ? const Color(0x15ffffff) : CupertinoColors.white,
+                            image: widget.recipient["photoURL"] == null ? null : DecorationImage(image: NetworkImage(widget.recipient["photoURL"]))),
+                        child: widget.recipient["photoURL"] == null ? Text(widget.recipient["displayName"].toString().toUpperCase()[0]) : null),
+                  Container(
+                      margin: const EdgeInsets.symmetric(vertical: 4),
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          color: widget.message.deleted != null ? const Color(0x10ffffff) : (isCurrentUser ? CupertinoColors.activeBlue : CupertinoColors.activeGreen),
+                          border: widget.message.deleted != null ? Border.all(color: const Color(0x20ffffff)) : null,
+                          borderRadius: BorderRadius.circular(12).copyWith(bottomRight: isCurrentUser ? const Radius.circular(0) : null, bottomLeft: isCurrentUser ? null : const Radius.circular(0))),
+                      child: Text(widget.message.deleted == null ? widget.message.message : "(Message deleted)",
+                          style: TextStyle(color: widget.message.deleted != null ? const Color(0x80ffffff) : null, fontStyle: widget.message.deleted != null ? FontStyle.italic : null))),
+                ],
+              ),
               if (widget.message.reactIndex != null && widget.message.reactIndex != 0 && !isCurrentUser)
                 Padding(padding: const EdgeInsets.symmetric(horizontal: 10), child: Icon(disabledIcons[widget.message.reactIndex! - 1], size: 18, color: CupertinoColors.inactiveGray)),
             ]),
             if (widget.message.edited != null && widget.message.deleted == null)
               Padding(
-                  padding: EdgeInsets.only(top: 2, bottom: showTime ? 0 : 8), child: const Text("(Edited)", style: TextStyle(color: CupertinoColors.inactiveGray, fontSize: 12, fontStyle: FontStyle.italic))),
+                  padding: EdgeInsets.only(top: 2, bottom: showTime ? 0 : 8, left: isCurrentUser ? 0 : 46),
+                  child: const Text("(Edited)", style: TextStyle(color: CupertinoColors.inactiveGray, fontSize: 12, fontStyle: FontStyle.italic))),
             if (showTime)
               Padding(
-                  padding: const EdgeInsets.only(top: 2, bottom: 8),
+                  padding: EdgeInsets.only(top: 2, bottom: 8, left: isCurrentUser ? 0 : 46),
                   child: Text(
                       widget.message.timestamp.toDate().isBefore(DateTime.now().subtract(const Duration(days: 1)))
                           ? Moment(widget.message.timestamp.toDate()).toString()

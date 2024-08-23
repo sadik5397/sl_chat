@@ -17,12 +17,16 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
   /// TextEditingController for the name field
   TextEditingController nameController = TextEditingController();
+
   /// TextEditingController for the email field
   TextEditingController emailController = TextEditingController();
+
   /// TextEditingController for the password field
   TextEditingController passwordController = TextEditingController();
+
   /// TextEditingController for the confirm password field
   TextEditingController rePasswordController = TextEditingController();
+
   /// Boolean to control the loading state of the button
   bool buttonLoading = false;
 
@@ -44,7 +48,15 @@ class _SignUpState extends State<SignUp> {
               const SizedBox(height: 12),
               ThemeTextField(autofillHints: AutofillHints.password, title: "Password", controller: passwordController, obscureText: true, textInputAction: TextInputAction.next),
               const SizedBox(height: 12),
-              ThemeTextField(autofillHints: AutofillHints.newPassword, title: "Confirm Password", controller: rePasswordController, obscureText: true, textInputAction: TextInputAction.done),
+              ThemeTextField(
+                autofillHints: AutofillHints.newPassword,
+                title: "Confirm Password",
+                controller: rePasswordController,
+                obscureText: true,
+                textInputAction: TextInputAction.done,
+                onSubmitted: (p0) async => await AuthService()
+                    .signUpWithEmailPassword(name: nameController.text, email: emailController.text, password: passwordController.text, rePassword: rePasswordController.text, context: context),
+              ),
               const SizedBox(height: 24),
               ThemeButton(
                   title: "Sign Up",

@@ -20,7 +20,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   @override
   Widget build(BuildContext context) {
     ///  State variable to track the button loading state
-    bool buttonLoading = false;
 
     return CupertinoPageScaffold(
         // navigationBar: CupertinoNavigationBar(middle: Text("SL Chat")),
@@ -31,16 +30,15 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               const SizedBox(height: 24),
               const Text("Forgot Password?"),
               const SizedBox(height: 24),
-              ThemeTextField(autofillHints: AutofillHints.email, title: "Email", controller: emailController, textInputType: TextInputType.emailAddress, textInputAction: TextInputAction.next),
+              ThemeTextField(
+                  autofillHints: AutofillHints.email,
+                  title: "Email",
+                  controller: emailController,
+                  textInputType: TextInputType.emailAddress,
+                  textInputAction: TextInputAction.next,
+                  onSubmitted: (p0) async => await AuthService().restPasswordRequest(email: emailController.text).then((value) => emailController.clear())),
               const SizedBox(height: 24),
-              ThemeButton(
-                  title: "Reset Password",
-                  isLoading: buttonLoading,
-                  onTap: () async {
-                    setState(() => buttonLoading = true);
-                    await AuthService().restPasswordRequest(email: emailController.text).then((value) => emailController.clear());
-                    setState(() => buttonLoading = false);
-                  }),
+              ThemeButton(title: "Reset Password", onTap: () async => await AuthService().restPasswordRequest(email: emailController.text).then((value) => emailController.clear())),
               const SizedBox(height: 12),
               ThemeButton(title: "Go Back Sign In", onTap: () => routeBack(context), textOnly: true, textColor: CupertinoColors.activeBlue)
             ])));

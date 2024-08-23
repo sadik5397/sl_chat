@@ -32,9 +32,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 stream: FireStoreService().getMessageStreamFromFireStore(receiverID: widget.recipient["uid"]),
                 builder: (context, snapshot) {
                   return handleSnapShotError(snapshot) ??
-                      Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: snapshot.data!.map<Widget>((message) => ChatListTile(message: message, context: context)).toList());
+                      Column(mainAxisAlignment: MainAxisAlignment.end, children: snapshot.data!.map<Widget>((message) => ChatListTile(message: message, context: context, recipient: widget.recipient)).toList());
                 })
           ])),
           Padding(
@@ -46,6 +44,10 @@ class _ChatScreenState extends State<ChatScreen> {
                   textInputAction: TextInputAction.send,
                   title: "Reply Here",
                   autoFocus: true,
+                  onSubmitted: (p0) async {
+                    await FireStoreService().sendMessageToFireStore(receiverID: widget.recipient["uid"], message: reply.text);
+                    reply.clear();
+                  },
                   endChild: CupertinoButton(
                       padding: const EdgeInsets.only(right: 10),
                       child: const Icon(CupertinoIcons.arrow_up_circle_fill, size: 28),

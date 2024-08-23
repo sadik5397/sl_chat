@@ -13,7 +13,7 @@ class ThemeTextField extends StatelessWidget {
       this.autofillHints,
       this.endChild,
       this.textCapitalization,
-      this.autoFocus = false});
+      this.autoFocus = false, this.onSubmitted});
 
   final String title;
   final String? floatingTitle, autofillHints;
@@ -22,6 +22,7 @@ class ThemeTextField extends StatelessWidget {
   final TextInputType? textInputType;
   final TextInputAction? textInputAction;
   final TextCapitalization? textCapitalization;
+  final Function(String)? onSubmitted;
   final Widget? endChild;
 
   @override
@@ -29,6 +30,7 @@ class ThemeTextField extends StatelessWidget {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       if (floatingTitle != null) Padding(padding: const EdgeInsets.only(bottom: 6, left: 2), child: Text(floatingTitle!, style: const TextStyle(fontSize: 12, color: CupertinoColors.inactiveGray))),
       CupertinoTextField(
+          onSubmitted: onSubmitted,
           autofocus: autoFocus,
           autofillHints: autofillHints != null ? [autofillHints!] : null,
           enabled: !isDisable,

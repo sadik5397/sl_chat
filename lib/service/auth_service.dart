@@ -13,7 +13,7 @@ import 'firestore_service.dart';
 class AuthService {
   final FirebaseAuth auth = FirebaseAuth.instance;
 
-  Future<UserCredential> signInWithGoogle() async {
+  Future<UserCredential> signInWithGoogle(BuildContext context) async {
     // Try to sign in the user with Google
     try {
       // Sign in the user with Google
@@ -28,6 +28,8 @@ class AuthService {
       UserCredential userCredential = await auth.signInWithCredential(credential);
       // Save the user to Firestore
       await FireStoreService().saveUserToFireStore(user: userCredential.user!);
+      // Navigate to the Home screen and remove all previous screens
+      routeNoBack(context, const Home());
       // Return the user credential
       return userCredential;
     } on FirebaseAuthException catch (e) {
@@ -36,7 +38,7 @@ class AuthService {
     }
   }
 
-  Future<UserCredential> signInWithEmailPassword({required String email, required String password}) async {
+  Future<UserCredential> signInWithEmailPassword({required String email, required String password, required BuildContext context}) async {
     // Try to sign in the user with email and password
     try {
       // Sign in the user with email and password
@@ -46,6 +48,8 @@ class AuthService {
         // Save the user to Firestore if they don't exist
         await FireStoreService().saveUserToFireStore(user: userCredential.user!);
       }
+      // Navigate to the Home screen and remove all previous screens
+      routeNoBack(context, const Home());
       // Return the user credential
       return userCredential;
     } on FirebaseAuthException catch (e) {

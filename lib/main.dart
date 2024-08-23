@@ -24,6 +24,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'SL Chat',
         theme: lightTheme,
+
         /// StreamBuilder to handle user authentication state.
         home: StreamBuilder<User?>(
             stream: FirebaseAuth.instance.authStateChanges(),

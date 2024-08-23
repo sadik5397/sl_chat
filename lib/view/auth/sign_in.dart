@@ -19,8 +19,10 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   // TextEditingController for email input
   TextEditingController emailController = TextEditingController();
+
   // TextEditingController for password input
   TextEditingController passwordController = TextEditingController();
+
   // Boolean to track button loading state
   bool buttonLoading = false;
 
@@ -37,26 +39,25 @@ class _SignInState extends State<SignIn> {
               const Text("Welcome to SL Chat"),
               const SizedBox(height: 24),
               // ThemeTextField for email input
-              ThemeTextField(
-                  autofillHints: AutofillHints.email,
-                  title: "Email",
-                  controller: emailController,
-                  textInputType: TextInputType.emailAddress,
-                  textInputAction: TextInputAction.next),
+              ThemeTextField(autofillHints: AutofillHints.email, title: "Email", controller: emailController, textInputType: TextInputType.emailAddress, textInputAction: TextInputAction.next),
               const SizedBox(height: 12),
               // ThemeTextField for password input
-              ThemeTextField(autofillHints: AutofillHints.password, title: "Password", controller: passwordController, obscureText: true, textInputAction: TextInputAction.done),
+              ThemeTextField(
+                  autofillHints: AutofillHints.password,
+                  title: "Password",
+                  controller: passwordController,
+                  obscureText: true,
+                  textInputAction: TextInputAction.done,
+                  onSubmitted: (p0) async => await AuthService().signInWithEmailPassword(email: emailController.text, password: passwordController.text, context: context)),
               const SizedBox(height: 24),
               // ThemeButton for Sign In
-              ThemeButton(title: "Sign In", onTap: () async => await AuthService().signInWithEmailPassword(email: emailController.text, password: passwordController.text)),
+              ThemeButton(title: "Sign In", onTap: () async => await AuthService().signInWithEmailPassword(email: emailController.text, password: passwordController.text, context: context)),
               const SizedBox(height: 12),
               // ThemeButton for Sign Up
-              ThemeButton(
-                  title: "Sign Up", onTap: () => route(context, const SignUp()), backgroundColor: CupertinoColors.extraLightBackgroundGray, textColor: CupertinoColors.systemCyan),
+              ThemeButton(title: "Sign Up", onTap: () => route(context, const SignUp()), backgroundColor: CupertinoColors.extraLightBackgroundGray, textColor: CupertinoColors.systemCyan),
               const SizedBox(height: 12),
               // ThemeButton for Sign In with Google
-              ThemeButton(
-                  title: "Continue with Google", onTap: () async => await AuthService().signInWithGoogle(), backgroundColor: CupertinoColors.activeGreen),
+              ThemeButton(title: "Continue with Google", onTap: () async => await AuthService().signInWithGoogle(context), backgroundColor: CupertinoColors.activeGreen),
               const SizedBox(height: 12),
               // ThemeButton for Forgot Password
               ThemeButton(title: "Forgot Password?", onTap: () => route(context, const ForgotPassword()), textOnly: true, textColor: CupertinoColors.activeBlue)

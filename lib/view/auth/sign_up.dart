@@ -5,6 +5,7 @@ import '../../component/page_navigation.dart';
 import '../../component/text_field.dart';
 import '../../service/auth_service.dart';
 
+/// SignUp Widget
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
 
@@ -12,11 +13,17 @@ class SignUp extends StatefulWidget {
   State<SignUp> createState() => _SignUpState();
 }
 
+/// State of the SignUp Widget
 class _SignUpState extends State<SignUp> {
+  /// TextEditingController for the name field
   TextEditingController nameController = TextEditingController();
+  /// TextEditingController for the email field
   TextEditingController emailController = TextEditingController();
+  /// TextEditingController for the password field
   TextEditingController passwordController = TextEditingController();
+  /// TextEditingController for the confirm password field
   TextEditingController rePasswordController = TextEditingController();
+  /// Boolean to control the loading state of the button
   bool buttonLoading = false;
 
   @override

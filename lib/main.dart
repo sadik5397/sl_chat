@@ -7,12 +7,14 @@ import 'theme/dark_theme.dart';
 import 'view/auth/sign_in.dart';
 import 'view/inbox/home.dart';
 
+/// Entry point for the application.
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
+/// Root widget of the application.
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -22,6 +24,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'SL Chat',
         theme: lightTheme,
+        /// StreamBuilder to handle user authentication state.
         home: StreamBuilder<User?>(
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting

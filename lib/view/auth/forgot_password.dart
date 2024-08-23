@@ -5,6 +5,7 @@ import '../../component/page_navigation.dart';
 import '../../component/text_field.dart';
 import '../../service/auth_service.dart';
 
+///  Forgot Password Screen
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({super.key});
 
@@ -13,10 +14,12 @@ class ForgotPassword extends StatefulWidget {
 }
 
 class _ForgotPasswordState extends State<ForgotPassword> {
+  ///  Controller for the email text field
   TextEditingController emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    ///  State variable to track the button loading state
     bool buttonLoading = false;
 
     return CupertinoPageScaffold(

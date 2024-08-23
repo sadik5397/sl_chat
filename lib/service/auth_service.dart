@@ -25,7 +25,7 @@ class AuthService {
       // Create a credential with the Google authentication credentials
       final AuthCredential credential = GoogleAuthProvider.credential(accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
       // Sign in the user with the Google credential
-      UserCredential userCredential = await auth.signInWithCredential(credential); 
+      UserCredential userCredential = await auth.signInWithCredential(credential);
       // Save the user to Firestore
       await FireStoreService().saveUserToFireStore(user: userCredential.user!);
       // Return the user credential
@@ -36,7 +36,6 @@ class AuthService {
     }
   }
 
-
   Future<UserCredential> signInWithEmailPassword({required String email, required String password}) async {
     // Try to sign in the user with email and password
     try {
@@ -45,7 +44,7 @@ class AuthService {
       // Check if the user exists in Firestore
       if (await FireStoreService().getUserIdListStreamFromFireStore().contains(userCredential.user!.uid)) {
         // Save the user to Firestore if they don't exist
-        FirestoreService().saveUserToFireStore(user: userCredential.user!);
+        await FireStoreService().saveUserToFireStore(user: userCredential.user!);
       }
       // Return the user credential
       return userCredential;
@@ -54,7 +53,6 @@ class AuthService {
       throw Fluttertoast.showToast(msg: e.message.toString());
     }
   }
-
 
   /// Updates the user's profile with the given name and photo URL.
   Future<void> updateProfile({String? name, String? photoUrl}) async {
@@ -68,8 +66,7 @@ class AuthService {
     }
   }
 
-
-   /// Changes the password of the current user.
+  /// Changes the password of the current user.
   Future<void> changePassword({required String password, required String rePassword}) async {
     try {
       if (password == rePassword) {
@@ -83,8 +80,7 @@ class AuthService {
     }
   }
 
-
-   /// Sends a password reset email to the specified email address.
+  /// Sends a password reset email to the specified email address.
   Future<void> restPasswordRequest({required String email}) async {
     try {
       await auth.sendPasswordResetEmail(email: email);
@@ -93,7 +89,6 @@ class AuthService {
       throw Fluttertoast.showToast(msg: e.message.toString());
     }
   }
-
 
   Future<UserCredential?> signUpWithEmailPassword({required String email, String? name, String? photoUrl, required String password, required String rePassword, required BuildContext context}) async {
     // Try to create a new user with email and password
@@ -120,7 +115,6 @@ class AuthService {
     }
   }
 
-
   void signOut(BuildContext context) {
     // Try to sign out the user from Firebase Authentication
     try {
@@ -135,7 +129,6 @@ class AuthService {
     }
   }
 
-
   User getCurrentUserInfo() {
     try {
       // Get the current user from Firebase Authentication
@@ -148,7 +141,6 @@ class AuthService {
     }
   }
 
-
   Future<void> deleteUser({required BuildContext context}) async {
     // Show a Cupertino Dialog to confirm account deletion
     showCupertinoDialog(
@@ -159,40 +151,39 @@ class AuthService {
               content: const Text("Are you sure you want to delete your account? Your profile information including all of your chat history will be destroyed permanently"),
               actions: <Widget>[
                 // Cancel button to close the dialog
-            CupertinoDialogAction(child: const Text("Cancel"), onPressed: () => routeBack(context)),
+                CupertinoDialogAction(child: const Text("Cancel"), onPressed: () => routeBack(context)),
                 // Delete button to confirm account deletion
-            CupertinoDialogAction(
-                isDestructiveAction: true,
-                child: const Text("Delete"),
-                onPressed: () async {
-                  try {
+                CupertinoDialogAction(
+                    isDestructiveAction: true,
+                    child: const Text("Delete"),
+                    onPressed: () async {
+                      try {
                         // Delete user data from Firestore
-                    await FireStoreService().deleteUserFromFireStore(user: auth.currentUser!);
+                        await FireStoreService().deleteUserFromFireStore(user: auth.currentUser!);
                         // Delete user account from Firebase Authentication
-                    await auth.currentUser!.delete();
+                        await auth.currentUser!.delete();
                         // Navigate back to the previous screen
-                    routeBack(context);
+                        routeBack(context);
                         // Show a toast message indicating successful account deletion
-                    Fluttertoast.showToast(msg: "Account deleted successfully");
+                        Fluttertoast.showToast(msg: "Account deleted successfully");
                         // Navigate to the SignIn screen and remove all previous screens
-                    Navigator.of(context).pushAndRemoveUntil(CupertinoPageRoute(builder: (context) => const SignIn()), (route) => false);
-                  } on FirebaseAuthException catch (e) {
+                        Navigator.of(context).pushAndRemoveUntil(CupertinoPageRoute(builder: (context) => const SignIn()), (route) => false);
+                      } on FirebaseAuthException catch (e) {
                         // Handle FirebaseAuthException
-                    if (e.code == 'requires-recent-login') {
+                        if (e.code == 'requires-recent-login') {
                           // Navigate back to the previous screen
-                      routeBack(context);
+                          routeBack(context);
                           // Show a toast message asking the user to re-authenticate
-                      throw Fluttertoast.showToast(msg: "Please re-authenticate and try again.");
-                    } else {
+                          throw Fluttertoast.showToast(msg: "Please re-authenticate and try again.");
+                        } else {
                           // Navigate back to the previous screen
-                      routeBack(context);
+                          routeBack(context);
                           // Show a toast message with the error message
-                      throw Fluttertoast.showToast(msg: e.message.toString());
-                    }
-                  }
-                })
-          ]);
+                          throw Fluttertoast.showToast(msg: e.message.toString());
+                        }
+                      }
+                    })
+              ]);
         });
   }
-
 }

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:sl_chat/service/storage_service.dart';
 
 import '../../component/button.dart';
 import '../../component/cupertino_header.dart';
@@ -27,19 +28,23 @@ class _MyProfileState extends State<MyProfile> {
         navigationBar: CupertinoNavigationBar(
             previousPageTitle: "Inbox",
             trailing: CupertinoButton(padding: EdgeInsets.zero, onPressed: () async => await AuthService().deleteUser(context: context), child: const Icon(CupertinoIcons.delete_solid, size: 24))),
-        child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: ListView(children: [
-              const CupertinoHeader(header: "My Profile"),
+        child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 20).copyWith(top: 68),
+            child: Column(children: [
+              const Align(alignment: Alignment.centerLeft, child: CupertinoHeader(header: "My Profile")),
               const SizedBox(height: 12),
               GestureDetector(
-                  onTap: () {},
+                  onTap: () async {
+                    await StorageService().uploadProfilePictureToFirebaseStorageFolder(context);
+                    setState(() => currentUser = AuthService().getCurrentUserInfo());
+                  },
                   child: Container(
                       alignment: Alignment.center,
                       height: 96,
                       width: 96,
-                      decoration: BoxDecoration(shape: BoxShape.circle, color: const Color(0x15ffffff), image: currentUser.photoURL == null ? null : DecorationImage(image: NetworkImage(currentUser.photoURL!))),
-                      child: const Icon(CupertinoIcons.camera))),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle, color: const Color(0x15ffffff), image: currentUser.photoURL == null ? null : DecorationImage(image: NetworkImage(currentUser.photoURL!), fit: BoxFit.cover)),
+                      child: currentUser.photoURL != null ? const SizedBox() : const Icon(CupertinoIcons.camera))),
               const SizedBox(height: 24),
               ThemeTextField(title: "Display Name", floatingTitle: "Display Name", controller: nameController, textInputAction: TextInputAction.next),
               const SizedBox(height: 12),

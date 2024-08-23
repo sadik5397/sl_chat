@@ -19,7 +19,7 @@ class FireStoreService {
     // Update displayName if provided
     if (displayName != null) await fireStore.collection("Users").doc(uid).update({'displayName': displayName});
     // Update photoUrl if provided
-    if (photoUrl != null) await fireStore.collection("Users").doc(uid).update({'photoUrl': photoUrl});
+    if (photoUrl != null) await fireStore.collection("Users").doc(uid).update({'photoURL': photoUrl});
   }
 
 
